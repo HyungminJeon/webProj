@@ -10,31 +10,50 @@
 		}
 
 		tr:nth-of-type(2n){
-			background-color: brown;
+		background-color: palevioletred;
+		}
+
+		tr:nth-of-type(2n+1){
+		background-color: pink;
 		}
 		div{
 		font-size:16pt;
 		font-weight:700;
-		width:800px;
+		width:600px;
 		height: 800px;
 		text-align:center;
-		line-height: 100px;
 		}
-		nav{
-		float:left;
- 		}
- 		section{
- 		}
- 		aside{
- 		}
-	</style>
+
+		.parent{
+    width: 90%;
+    margin: 50px auto;
+}
+
+.first {
+    float: left;
+    width:33%;
+    box-sizing: border-box;
+}
+
+.second{
+    float: left;
+    width:33%;
+    box-sizing: border-box;
+}
+
+.third{
+    float: right;
+    width:34%;
+    box-sizing: border-box;
+}
+
+		</style>
 
 
 
 </head>
 
 <body>
-	<center>
 <!--
 	<ul>
 		<li>안녕</li>
@@ -46,31 +65,32 @@
 	<ul>
 		<li id="second">파란색</li>
 	</ul>
-
 -->
 <!--<script src="script/Calulator2.js"></script> -->
 <!-- <script src='script/obj.js'></script> -->
 <!-- <script src="script/obj2.js"></script> -->
 
 <script src="script/function.js"></script>
-<div>
 
-	<nav>
-		<script src="script/Calulator.js"></script>
-	</nav>
+<script src="script/function2.js"></script>
 
-	<section>
-		<script src="script/Calulator2.js"></script>
-	</section>
+<script src="script/function3.js"></script>
 
-	<aside>
-		<script src="script/Calulator3.js"></script>
-	</aside>
 
+
+
+<br>
+
+<script src="script/class.js"></script>
+
+
+
+<div class="parent">
+	<div class="first"> <script src="script/Calulator.js"></script> </div>
+	<div class="second"><script src="script/Calulator2.js"></script></div>
+	<div class="third"><script src="script/Calulator3.js"></script></div>
 </div>
 
-
-</center>
 
 
 
