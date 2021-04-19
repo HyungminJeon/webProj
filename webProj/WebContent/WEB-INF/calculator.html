@@ -85,17 +85,14 @@
                     oper = null;
 
                 } else if (touchVal != '=') {   //oper에 연산자 입력 
-                    if(oper = null) {
                     oper = touchVal;
 
                 } else { //계산
-                    if(oper = null) {
                     if(oper == '+') {
                         dp.innerHTML = parseInt(firstVal) + parseInt(lastVal)
                     } else if (oper == '-') {
                         var a = (firstVal - lastVal);
                         dp.innerHTML = a;
-
                     } else if (oper == '*') {
                         dp.innerHTML =(firstVal * lastVal)
                     } else if (oper == '/') {
@@ -103,26 +100,7 @@
                     } else if (oper == '%') {
                         dp.innerHTML = (firstVal % lastVal)
                     }
-                }
-                else {
-
-                    if(oper == '+') {
-                        dp.innerHTML = parseInt(firstVal) + parseInt(lastVal)
-                    } else if (oper == '-') {
-                        var a = (a - lastVal);
-                        lastVal =a;
-
-                    } else if (oper == '*') {
-                        dp.innerHTML =(firstVal * lastVal)
-                    } else if (oper == '/') {
-                        dp.innerHTML =(firstVal / lastVal)
-                    } else if (oper == '%') {
-                        dp.innerHTML
-
-
-                }
                     return; //function 에서 return을 만나면 종료.
-
 
                 }
 
