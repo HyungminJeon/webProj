@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax.html</title>
+</head>
+
+<body>
+
+    <form action = "empList.do" method ="POST"> 
+        LastName: <input type = "text" name= "last_name" id = "">
+        <br>
+        Email: <input type = "text" name= "email" id="">
+        <br>
+        HireDate: <input type = "text" name= "hire_date" id = "">
+        <br>
+        JobId: <input type = "text" name= "job_id" id = "">
+        <br>
+        <input type ="submit" value = "저장">
+        <input type ="reset" value = "취소">
+        
+
+    </form>
+    <div id="show"></div>
+    <script>
+        // AJAX 원리
+        // 일단 다 실행하고 지정된 시간에 따라 작업 실행    (시간에 구애받지 않는 비동기방식)
+
+
+        // console.log('1');
+        // setTimeout(function () {
+        //     console.log('2');
+        // }, 2000);
+        // setTimeout(function () {
+        //     console.log('3');
+        // }, 10000);
+        // setTimeout(function () {
+        //     console.log('4');
+        // }, 2000);
+        // console.log('5');
+
+
+        var xhtp = new XMLHttpRequest(); //서버에 명령 요청하고 비동기방식으로 호출
+        //앞에 on 있으면 event를 나타냄
+        xhtp.onreadystatechange = function () { //상태가 바뀌는 이벤트가 발생할 때 마다,
+            console.log(xhtp.readyState, xhtp.status, xhtp.responseText);
+
+
+
+            /* readyState :                     //  xhtp.status : 서버 상태 ( 200이명 정상, 비정상이면 404 )
+            1 = 서버와 커넥션 후 준비완료          
+            2 = 요청한 정보를 서버에서 받았다.
+            3 = 프로세싱이 요청되었다.
+            4 = 요청이 완료되었고 또 다른 응답을 할 준비가 되었음.
+            */
+
+            if (xhtp.readyState == 4 && xhtp.status == 200) { //정상적으로 동작되었으면,
+                console.log(xhtp.responseText); //요청된 텍스트를 콘솔에 출력하라
+
+
+                var show = document.getElementById('show'); // show 변수에 div show를 넣어라
+
+
+                var obj = JSON.parse(xhtp.responseText);
+                console.log(obj);
+                // show.innerHTML = obj.name;            // show 변수에 안에  parse한 obj의 name 값을 넣어라. 
+
+                // table tr td => div.appendChild();
+                var table = document.createElement('table');
+                table.setAttribute('border', '1');
+
+                // 배열의 갯수만큼 tr 생성
+                for (var data of obj) {
+                    var tr = document.createElement('tr');
+                    //field 수만큼 td반복 생성
+                    for (var field in data) {
+                        var td = document.createElement('td');
+                        var text = document.createTextNode(data[field]);
+                        td.appendChild(text);
+                        tr.appendChild(td);
+                    }
+                    table.appendChild(tr);
+                }
+                //div#show의 자식으로 table을 달아준다. 
+                document.getElementById('show').appendChild(table);
+            }
+        }
+        xhtp.open('get', 'empList.do?dept=50'); //서버에 indext.html이라는 파일을 열도록 요청하겠다. 'http://localhost/webProj/empList.do?dept=50'라고 다 적어도 됨
+        xhtp.send();
+    </script>
+
+</body>
+
+</html>

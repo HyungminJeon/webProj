@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>json.html</title>
+</head>
+
+<body>
+    <script>
+        // Json: 서버에 데이터 전달할때 텍스트 형식으로 전달해야함. 자바 오브젝트 데이터를 쉽게 서버에 전달하기 위해 이용 
+        // mockaroo : 여러가지 데이터 타입 (ex.Json)을 쉽게 만들어줌
+
+        //자바 오브젝트
+        var myObj = {
+            name: "John",
+            age: 31,
+            city: "New York"
+        };
+
+        // Json의 자바스크립트 Object 표기법
+        var jsonObj = '{"name": "John", "age": "31", "city": "New York"}';
+
+
+        //서버에 보낼때 key value 형식으로 전달
+
+
+        // Json => Object
+        var data = JSON.parse(jsonObj); //제이슨타입을 자바 오브젝트 타입으로 변환
+        //JAVA Object => Json
+        var json = JSON.stringify(data);
+
+        console.log(data.name, data.age, data.city);
+        console.log(json);
+
+
+
+        // var strObj ="name:John,age:31,city:New York";
+        // var pos = strObj.indexOf('name');  //name 위치인 0 리턴
+        // var name = strObj.substring(5,9);   //json 을 안썼을 때 문자열 데이터 가지고오는 방법: 비효율적임
+
+        var mockData = // 서버에서 받아온 사원정보
+            '[{"id":1,"first_name":"Marylynne","last_name":"Salway","email":"msalway0@spiegel.de","gender":"Genderfluid","ip_address":"74.52.98.100"},{"id":19,"first_name":"Amie","last_name":"Champneys","email":"achampneysi@senate.gov","gender":"Male","ip_address":"163.17.82.91"},{"id":20,"first_name":"Holmes","last_name":"Dust","email":"hdustj@indiatimes.com","gender":"Non-binary","ip_address":"32.20.197.151"}]'
+        var mockObj = JSON.parse(mockData);
+        console.log(mockObj);
+
+        // for(var i = 0; i <mockObj.length; i++) {
+        //     console.log(mockObj[i].id, mockObj[i].first_name);
+        // }
+
+
+        var table = document.createElement('table');
+        table.setAttribute('border', '1');
+        var cap = document.createElement('caption');
+        cap.innerHTML = '사원리스트';
+        table.appendChild(cap);
+        for (var i = 0; i < mockObj.length; i++) {
+            var tr = document.createElement('tr');
+            for (field in mockObj[i]) {
+                var td = document.createElement('td');
+                var text = document.createTextNode(mockObj[i][field]);
+                td.appendChild(text);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+    </script>
+
+</body>
+
+</html>
