@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam01.html</title>
+
+    <script>
+        function createTitle(t1, t2, t3, t4) {
+
+            var trTag = document.createElement('tr');
+            for (var i = 0; i < arguments.length; i++) {
+                var th1 = document.createElement('th');
+                th1.innerHTML = arguments[i]; //들어온 매개변수만큼 입력
+                trTag.appendChild(th1);
+            }
+
+            tbl.appendChild(trTag);
+        }
+
+        // 회원리스트에 회원정보 보여주는 func.
+        function createData() {
+
+            for (var person of persons) { //persons 배열안 요소갯수만큼 loop 반복
+                var trTag = document.createElement('tr');
+                trTag.setAttribute('name', person.name);
+
+
+                for (var field in person) { //in 필드(ex.p1)안 요소갯수만큼 반복
+
+                    if (field == 'name') { // 필드값이 id일 때, (id를 클릭할때 수정할 수 있도록 하기위해)
+                        var tdTag = document.createElement('td');
+
+
+                        tdTag.onclick = function () {
+
+                            var nameVal = this.innerHTML; //해당 필드의 id값
+                            var ageVal = this.nextSibling.innerHTML; //해당 필드의 score값
+                            var numVal = this.nextSibling.nextSibling.innerHTML; //해당 필드의 score값
+
+                            // console.log(idVal, nameVal, scoreVal, genVal);
+
+                            document.getElementById('name').value = nameVal;
+                            nameVal; //input입력란의 name값을 nameVal(해당 필드의 id값)으로 변경
+                            document.getElementById('age').value = ageVal;
+                            document.getElementById('num').value = numVal;
+                        }
+
+                        var text = document.createTextNode(person[field]);
+                        trTag.appendChild(tdTag);
+                        tdTag.appendChild(text);
+
+                    } else {
+                        var tdTag = document.createElement('td');
+                        var text = document.createTextNode(person[field]);
+                        trTag.appendChild(tdTag);
+                        tdTag.appendChild(text);
+                    }
+                }
+
+                var btn = document.createElement('button');
+                btn.innerHTML = '삭제';
+                btn.onclick = deleteRow;
+
+                var tdTag = document.createElement('td');
+                tdTag.appendChild(btn);
+                trTag.appendChild(tdTag);
+                tbl.appendChild(trTag);
+            }
+        }
+
+        function deleteRow() {
+
+            this.parentNode.parentNode.remove();
+        }
+
+
+
+        function saveBtnFnc() {
+
+            var iName = document.getElementById('name');
+            var iAge = document.getElementById('age');
+            var iNum = document.getElementById('num');
+
+            var tdTag = document.createElement('td');
+            var trTag = document.createElement('tr');
+
+            //name
+            tdTag.innerHTML = iName.value;
+            trTag.appendChild(tdTag);
+            //age
+            tdTag = document.createElement('td');
+            tdTag.innerHTML = iAge.value;
+            trTag.appendChild(tdTag);
+            tbl.appendChild(trTag);
+            //num
+            tdTag = document.createElement('td');
+            tdTag.innerHTML = iNum.value;
+            trTag.appendChild(tdTag);
+            //button
+            tdTag = document.createElement('td');
+            var btn = document.createElement('button');
+            btn.innerHTML = '삭제';
+            btn.onclick = deleteRow;
+            tdTag.appendChild(btn);
+            trTag.appendChild(tdTag);
+
+
+            tbl.appendChild(trTag);
+
+            console.log(iName.value, iAge.value, iNum.value)
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            //페이지 로딩 시 회원리스트
+            //타이틀과 데이터 처리
+            createTitle('이름', '나이', '전화번호','삭제');
+            createData();
+
+
+            //저장버튼 클릭시
+            var saveBtn = document.getElementById('saveBtn');
+            saveBtn.addEventListener('click', saveBtnFnc); //click 하면 function 실행
+
+
+
+
+        });
+        //DOMContentLoaded(전체이벤트 실행) 이벤트가 발생할 때 function 실행
+        // window.onload = function () {    // window 페이지 전체를 로딩하고 나서 function 실행 (다른 스크립트의 변수 사용가능)
+        //     var saveBtn = document.getElementById('saveBtn');
+        //    }
+    </script>
+
+</head>
+
+<body>
+
+    <div>
+        <div>이름:<input type="text" name="name" id="name" value='이름을 입력하세요'> </div>
+        <div>나이:<input type="text" name="age" id="age" value='나이를 입력하세요'></div>
+        <div>전화번호:<input type="text" name="num" id="num" value='번호를 입력하세요'></div>
+    </div>
+    <div>
+        <button id="saveBtn">저장</button>
+    </div>
+    </div>
+
+    <hr>
+
+
+    <table border="1" id='tbl'>
+        <caption align="top">등록화면</caption>
+    </table>
+
+    <script>
+        var p1 = { //p1
+            name: 'Kim',
+            age: '12',
+            num: '010-1523-3521'
+
+        }
+        var p2 = { //p2
+            name: 'Park',
+            age: '23',
+            num: '010-5235-5125'
+
+        }
+        var persons = [p1, p2];
+
+        var tbl = document.getElementById('tbl');
+    </script>
+
+</body>
+
+</html>

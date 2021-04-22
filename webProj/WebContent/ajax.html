@@ -6,25 +6,85 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ajax.html</title>
+
+    <script>
+        //submit을 누를 때 아작스를 실행시키는 function
+        document.addEventListener('DOMContentLoaded', function () { //먼저 전체 메서드 실행시킨 뒤 메서드 실행한다
+            var frm = document.getElementById('frm'); //form의 frmid를 가져온다
+            frm.addEventListener('submit', function (e) {
+                e.preventDefault(); // submit의 default 기능을 막아 놓음.
+                console.log(e);
+                var ln = document.getElementById('last_name').value; //input form에 입력된 last name 변수 저장
+                var em = document.getElementById('email').value;
+                var hd = document.getElementById('hire_date').value;
+                var ji = document.getElementById('job_id').value;
+                var fn = document.getElementById('first_name').value;
+                var sa = document.getElementById('salary').value;
+
+
+                var data = 'last_name=' + ln + '&email=' + em + '&hire_date=' + hd + '&job_id=' + ji +
+                    '&first_name=' + fn + '&salary=' + sa;
+                
+                var xhtp = new XMLHttpRequest();
+                xhtp.open('post', 'empList.do');
+                xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+                xhtp.send(data);
+
+                
+                // 위 submit이 제대로 작동이 되었으면(상태가 정상적으로 변했으면,.. function 실행(테이블 행 추가해 줌)))
+                xhtp.onreadystatechange = function () {
+                    if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        console.log(xhtp.responseText);
+                        var obj = JSON.parse(xhtp.responseText);
+                        console.log(obj.employee_id, obj.first_name, obj.last_name, obj.email, obj.salary, obj.job_id, obj.hire_date);
+                        
+                        var tr = document.createElement('tr');
+                        
+                        for (var field in obj) {
+                            var td = document.createElement('td');
+                            var text = document.createTextNode(obj[field]);
+                            td.appendChild(text);
+                            tr.appendChild(td);
+                        }
+                        table.appendChild(tr);
+                        document.getElementById('show').appendChild(table);
+                        
+                    }
+                }
+            })
+        })
+    </script>
 </head>
 
 <body>
 
-    <form action = "empList.do" method ="POST"> 
-        LastName: <input type = "text" name= "last_name" id = "">
-        <br>
-        Email: <input type = "text" name= "email" id="">
-        <br>
-        HireDate: <input type = "text" name= "hire_date" id = "">
-        <br>
-        JobId: <input type = "text" name= "job_id" id = "">
-        <br>
-        <input type ="submit" value = "저장">
-        <input type ="reset" value = "취소">
-        
 
+    <!-- form 부분 -->
+
+
+    <form id="frm" action="empList.do" method="POST">
+
+        FirstName: <input type="text" name="first_name" id="first_name">
+        <br>
+        LastName: <input type="text" name="last_name" id="last_name">
+        <!-- 서블릿에서  req.getParameter 작성시 name값을 똑같이 적어줘야함 -->
+        <br>
+        Email: <input type="text" name="email" id="email">
+        <br>
+        HireDate: <input type="text" name="hire_date" id="hire_date">
+        <br>
+        JobId: <input type="text" name="job_id" id="job_id">
+        <br>
+        Salary: <input type="text" name="salary" id="salary">
+        <br>
+
+        <input type="submit" value="저장">
+        <input type="reset" value="취소">
     </form>
+
     <div id="show"></div>
+
+
     <script>
         // AJAX 원리
         // 일단 다 실행하고 지정된 시간에 따라 작업 실행    (시간에 구애받지 않는 비동기방식)
@@ -43,7 +103,22 @@
         // console.log('5');
 
 
+        //테이블 부분
+
+
         var xhtp = new XMLHttpRequest(); //서버에 명령 요청하고 비동기방식으로 호출
+        var table;
+        var title = {
+            employeeId: '사원번호',
+            firstName: '이름',
+            lastName: '성씨',
+            email: '이메일',
+            salary: '급여',
+            hire_date: '입사일자',
+            job_id: '직무',
+            func: '기능'
+        }
+        
         //앞에 on 있으면 event를 나타냄
         xhtp.onreadystatechange = function () { //상태가 바뀌는 이벤트가 발생할 때 마다,
             console.log(xhtp.readyState, xhtp.status, xhtp.responseText);
@@ -64,7 +139,7 @@
                 var show = document.getElementById('show'); // show 변수에 div show를 넣어라
 
 
-                var obj = JSON.parse(xhtp.responseText);
+                var obj = JSON.parse(xhtp.responseText); // 열린 empList.do?dept=50 페이지의 text를 json 형식에서 일반 text형식으로 바꾼다
                 console.log(obj);
                 // show.innerHTML = obj.name;            // show 변수에 안에  parse한 obj의 name 값을 넣어라. 
 
@@ -72,26 +147,47 @@
                 var table = document.createElement('table');
                 table.setAttribute('border', '1');
 
+                //타이틀
+                var tr = document.createElement('tr');
+
+                for (var field in title) {
+                    var th = document.createElement('th');
+                    var text = document.createTextNode(title[field]);
+                    th.appendChild(text);
+                    tr.appendChild(th);
+                }
+                table.appendChild(tr);
+
+
+              
                 // 배열의 갯수만큼 tr 생성
                 for (var data of obj) {
-                    var tr = document.createElement('tr');
+                    var trTag = document.createElement('tr');
                     //field 수만큼 td반복 생성
                     for (var field in data) {
                         var td = document.createElement('td');
                         var text = document.createTextNode(data[field]);
                         td.appendChild(text);
-                        tr.appendChild(td);
+                        trTag.appendChild(td);
                     }
-                    table.appendChild(tr);
+
+                    var btn = document.createElement('button');
+                    btn.innerHTML = '삭제';
+                    td.appendChild(btn);
+                    trTag.appendChild(td);
+                    table.appendChild(trTag);
+                    
                 }
-                //div#show의 자식으로 table을 달아준다. 
-                document.getElementById('show').appendChild(table);
-            }
+                
+
+            
+            //div#show의 자식으로 table을 달아준다. 
+            document.getElementById('show').appendChild(table);
         }
-        xhtp.open('get', 'empList.do?dept=50'); //서버에 indext.html이라는 파일을 열도록 요청하겠다. 'http://localhost/webProj/empList.do?dept=50'라고 다 적어도 됨
+    }
+        xhtp.open('get','empList.do?dept=50'); //서버에 indext.html이라는 파일을 열도록 요청하겠다. 'http://localhost/webProj/empList.do?dept=50'라고 다 적어도 됨
         xhtp.send();
     </script>
 
 </body>
-
 </html>

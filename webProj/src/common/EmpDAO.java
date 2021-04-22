@@ -8,6 +8,10 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+
+//데이터베이스에서 데이터 가져오는 클래스
+
+
 public class EmpDAO {
 	Connection conn;
 	Statement stmt;
@@ -20,8 +24,8 @@ public class EmpDAO {
 		Employee empl = new Employee();
 		
 		String sql1 = "select employees_seq.nextval from dual";  //동시접속자가 호출해도 순차적으로 다른번호 부여
-		String sql2 = "insert into emp_temp(employee_id,last_name,email,hire_date,job_id) "
-				+ "values('?','?','?','?','?')";
+		String sql2 = "insert into emp_temp(employee_id, last_name, email, hire_date, job_id, DEPARTMENT_ID, FIRST_NAME,SALARY) " 
+					+ "values(?, ?, ?, ?, ?, 50,?,?)";
 		
 		try {
 			int empId = 0;
@@ -38,6 +42,8 @@ public class EmpDAO {
 			psmt.setString(3, emp.getEmail());
 			psmt.setString(4, emp.getHireDate());
 			psmt.setString(5, emp.getJobId());
+			psmt.setString(6, emp.getFirstName());
+			psmt.setInt(7, emp.getSalary());
 			
 			
 			int r = psmt.executeUpdate();
@@ -49,6 +55,8 @@ public class EmpDAO {
 			empl.setLastName(emp.getLastName());
 			empl.setJobId(emp.getJobId());
 			empl.setHireDate(emp.getHireDate());
+			empl.setFirstName(emp.getFirstName());
+			empl.setSalary(emp.getSalary());
 			
 			
 		} catch (SQLException e) {
@@ -60,7 +68,7 @@ public class EmpDAO {
 	public void insertEmp(Employee emp) {
 		
 		String sql = "insert into emp_temp(employee_id,last_name,email,hire_date,job_id) "
-				+ "values((select max(employee_id)+1 from emp_temp),'?','?','?','?')";
+				+ "values((select max(employee_id)+1 from emp_temp),?,?,?,?)";
 		
 		conn = DBCon.getConnect();
 		try {
@@ -95,7 +103,7 @@ public class EmpDAO {
 		}
 	}
 
-	public List<Employee> getEmByDept(String dept) {
+	public List<Employee> getEmpByDept(String dept) {
 
 		// 사원정보 가지고 오는 처리
 		String sql = "select * from emp_temp where department_id=" + dept + "order by employee_id";
@@ -113,6 +121,8 @@ public class EmpDAO {
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 
 				employees.add(emp);
 
@@ -143,7 +153,10 @@ public class EmpDAO {
 				emp.setLastName(rs.getString("last_name"));
 				emp.setEmail(rs.getString("email"));
 				emp.setSalary(rs.getInt("salary"));
+				emp.setHireDate(rs.getString("hire_date"));
+				emp.setJobId(rs.getString("job_id"));
 
+				
 				employees.add(emp);
 
 			}

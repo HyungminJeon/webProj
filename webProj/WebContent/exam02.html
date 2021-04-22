@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>exam02.html</title>
+</head>
+
+<body>
+    <script>
+        var xhtp = new XMLHttpRequest();
+        xhtp.open('get', 'members.json');
+        xhtp.send();
+        xhtp.onreadystatechange = function () {
+                if (xhtp.readyState == 4 && xhtp.status == 200) {
+                    console.log(xhtp.responseText); 
+
+                    var mockObj = JSON.parse(xhtp.responseText);
+
+
+
+        var table = document.createElement('table');
+        table.setAttribute('border', '1');
+        var cap = document.createElement('caption');
+        cap.innerHTML = '사원리스트';
+        table.appendChild(cap);
+        for (var i = 0; i < mockObj.length; i++) {
+            var tr = document.createElement('tr');
+            for (field in mockObj[i]) {
+                var td = document.createElement('td');
+                var text = document.createTextNode(mockObj[i][field]);
+                td.appendChild(text);
+                tr.appendChild(td);
+            }
+            table.appendChild(tr);
+        }
+        document.body.appendChild(table);
+                }
+        }
+    </script>
+
+</body>
+
+</html>
