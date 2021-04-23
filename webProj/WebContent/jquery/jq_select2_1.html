@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_select2_1.html</title>
+    <script src='../js/jquery-3.6.0.min.js'></script>
+
+<script>
+ $(function() {
+    //  $('#menu>li:first').css('background-color',"yellow");
+
+    //  $('#menu>li').first().css('background-color',"blue");
+
+    //  $('#menu>li').last().css('background-color',"pink");
+    //  $('#menu>li').eq(2).css('background-color',"gray");
+     
+    //  $('#menu>li:odd').first().css('background-color',"black");
+
+
+
+
+    //  $('.menu>li:even').css('background-color',"black");
+
+
+    //  $('.menu>li:nth-child(2n)').css('background-color',"green");
+
+     
+
+    //  $('li:nth-child(3)').css('background-color',"pink");    
+
+     $('li:last-of-type').css('background-color',"pink");
+
+
+     $('li:only-child').css('background-color',"pink"); //부모요소 내 li요소가 1개뿐인 li 요소만 선택
+
+
+
+     $('li:eq(2)').css('background-color',"pink"); 
+
+     $('li:gt(1)').css('background-color',"pink"); // 1보다 greater than
+
+     $('li:lt(1)').css('background-color',"pink");  // 1보다 less than
+
+     $('li').slice(1,3).eq(0).css('background-color',"pink");   //인덱스 1,2번만 가져오겠다
+ });
+</script>
+
+</head>
+<body>
+
+    <h1>탐색선택자</h1>
+    <ul id ='menu'>
+        <p>content1</p>
+        <li>내용1</li>
+        <p>content2</p>
+        <li>내용2</li>
+        <li>내용3</li>
+        <li>내용4</li>
+    </ul>
+
+    <ul class ='menu'>
+        <li>내용1</li>
+        <li>내용2</li>
+        <li>내용3</li>
+        <li>내용4</li>
+    </ul>
+    
+</body>
+</html>

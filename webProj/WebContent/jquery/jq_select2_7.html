@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_select2_7.html</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <script>
+        // const num1 = 10;             // const : 상수 = 한번 값 지정하면 값이 안바뀐다.
+        // {                           //let 변수를 쓰면 {}안의 값에 똑같은 변수이름을 써도 변수값이 안바뀐다.
+        //     let num1 =20;
+        //     console.log(num1);
+        // }
+
+        // num1 = 30;                 
+
+        // console.log(num1);
+
+        const num1 = {
+            name: 'Hong',
+            age: 10
+        };
+        const num2 = {
+            name: 'Hwang',
+            age: 15
+        };
+        const num3 = {
+            name: 'Park',
+            age: 20
+        };
+
+        const numbers = [num1, num2, num3];
+
+        // 자바스크립트 numbers.forEach(function(a,b,c));
+
+        $(numbers).each(function (index, value) { //numbers 안의 개수만큼 반복
+            console.log(index, value.name, value.age);
+        });
+
+        const names = $(numbers).map(function (a, b) {
+            console.log(a, b);
+            return b.name;
+        });
+
+        console.log(names);
+
+        const ages = $.grep(numbers, function (value, index) {
+            console.log(value, index);
+            return value.age ==15;      
+
+        });
+        console.log(ages);
+    </script>
+</head>
+
+<body>
+
+</body>
+
+</html>

@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style>
+	#sec1>h1 {
+		background-color: aqua;
+	}
+</style>
+
+
+<script src='../js/jquery-3.6.0.min.js'></script>
+
+<script>
+//  document.addEventListener('DOMC-...')
+$(document).ready(function(){               //$document object를 불러오고 준비가 되면 function 실행
+	var sec1 = document.getElementById('sec1');
+
+	sec1 = $('#sec1');
+	console.log(sec1.children().eq(1).html);            //jquery sec1 id값의 오브젝트를 불러와서 자식노드들을 가져오고 그중 인덱스1에 해당하는 ul을 불러온다 
+
+	$('#sec1>h1').css('color','red');
+	$('.sec1>h1').css('color','blue');
+	$('.sec1>ul>li').eq(0).css('color','pink');
+	// $('#sec1>ul').childern().eq(1).css('color','black');
+
+	// $('li').eq(0).parent().css('background-color','yellow');
+	$('li').eq(0).parents().css('background-color','pink');
+
+});
+</script>
+
+</head>
+<body>
+	<h1>Apple</h1>
+	<section id='sec1'>
+		<h1>Banana</h1>
+		<ul>
+			<li>Yellow</li>
+			<li>Red</li>
+		</ul>
+	</section>
+	<section class='sec1'>
+		<h1>Cherry</h1>
+		<ul>
+		<li>Yellow</li>
+		<li>Red</li>
+		</ul>
+	</section>
+</body>
+</html>
