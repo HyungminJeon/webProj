@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery/each3.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+
+
+            $.ajax({ //xmlhttprequest(); 를 비동기 방식으로 처리해주는 메서드
+                url: '../MOCK_DATA.json',
+                dataType: 'json',
+
+                //ajax는 비동기방식이므로  실행시킬 function이 있으면 success 안에 넣어줘야 한다.
+
+                success: successCallFnc, //연결 성공하면 function 실행   
+                error: errorCallFnc
+            });
+        });
+
+        function successCallFnc(resolve) {
+
+            // console.log(resolve);
+            let tbl = $('<table />');
+            tbl.attr('border','1');
+
+            //let = var 의 중복요소 체크
+            let contents = '';
+            $.each(resolve, function (i, o) {               //데이터 건수만큼 loop     i = 배열의 index 값  o = 배열의 값 
+                let trTag = $('<tr />');                    //row 생성
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseOverFnc);
+                trTag.mouseout(mouseOutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((evnt) => {
+                    console.log($(this),evnt);  
+                    //$(this) => function: event 대상, arrow fnc: object  
+                    evnt.currentTarget.parentNode.parentNode.remove();
+                });
+
+                trTag.append(
+                $('<td />').html(o.id),
+                $('<td />').html(o.first_name),
+                $('<td />').html(o.last_name),
+                $('<td />').html(o.email),
+                $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+
+            $('#show').append(tbl); //<p>1</p><p>2</p>.....  
+
+        }
+
+
+        function errorCallFnc(reject) {
+            console.error(reject);
+
+        }
+
+        function clickFnc() {
+            alert($(this).attr('id'));  
+        }
+
+        function mouseOverFnc() {         //$this : 현재 실행되고 있는 이벤트 요소
+            $(this).css('background-color','yellow');       
+        }
+
+        function mouseOutFnc() {
+            $(this).css('background-color',''); 
+        }
+
+    </script>
+</head>
+
+<body>
+    <div id="show">
+
+    </div>
+
+</body>
+
+</html>

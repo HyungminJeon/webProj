@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>map.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <p>Value:</p>
+    <form action ="">
+        <input type="text" name="name" id="" value='kildong'> <br>
+        <input type="text" name="passwd" id= "" value='1234'> <br>
+        <input type="text" name="age" id="" value='10'> <br>
+    </form>
+
+    <script>
+        $('p').append(
+        $('input').map(function() {
+            return $(this).val();
+        }).get().join(','));               //get : input 요소 각각을 가지고 와서 join: 배열 각 요소들을 자바 스크립트 문자열 타입으로 바꿈
+    </script>
+</body>
+</html>
