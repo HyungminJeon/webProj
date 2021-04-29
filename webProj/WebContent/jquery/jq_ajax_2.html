@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_ajax_2.html</title>
+    <style>
+        tr:nth-of-type(2n) {
+            background-color: yellow;
+        }
+        tr:nth-of-type(2n-1) {
+            background-color: aqua;
+        }
+    </style>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+
+
+
+
+    <script>
+        $(document).ready(function () {
+            $.get('../MOCK_DATA.json', function (dataa) { //가져온 json데이터에 funtion을 지정한다
+            	
+                console.log(dataa);
+                let $table = $('<table />').attr("border", "1"); //$table이라는 변수 선언
+                for (let i = 0; i < dataa.length; i++) {
+                    let $tr = $('<tr />');
+                    let $td_id = $('<td />').html(dataa[i].id);
+                    let $td_fn = $('<td />').html(dataa[i].first_name);
+                    let $td_ln = $('<td />').html(dataa[i].last_name);
+                    let $td_em = $('<td />').html(dataa[i].email);
+
+                    $tr.append($td_id, $td_fn, $td_ln, $td_em);
+                    $table.append($tr);
+                }
+                $('#show').append($table);
+
+            }, 'json')
+
+            //$('#show')
+        })
+    </script>
+
+</head>
+
+<body>
+    <div id="show"></div>
+
+</body>
+
+</html>

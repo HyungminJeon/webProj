@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jq_ajax_3.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+
+
+<script>
+        $(document).ready(function () {
+            $.post('../ajax.html', function (dataa) { 
+            	
+            	// AjaxServlet.java에  ajax.html라고 지정된 페이지를 post방식으로 요청하겟다
+            	
+                console.log(dataa);
+                
+            }, 'html')
+
+            //$('#show')
+        })
+    </script>
+   
+
+</head>
+
+<body>
+    <div id="show"></div>
+
+</body>
+
+</html>

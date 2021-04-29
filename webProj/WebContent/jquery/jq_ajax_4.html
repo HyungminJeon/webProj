@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>jq_ajax_4.html</title>
+	<script src="../js/jquery-3.6.0.min.js"></script>
+
+
+	<script>
+		//클라이언트 
+		$(document).ready(function () { //script function은 항상 마지막에 실행되지만 document.ready를 쓰면 가장 먼저 읽어오게 한다
+			//회원리스트 보여주기
+			$.ajax({
+				url: 'memberServlet.do', //ajax.html 라는 이름의 클라이언트를 실행시킨다.
+				type: 'get', // or 'post'        //doget method를 실행시킨다.
+				// data: 'p1=hello&p2=nice',     //data: 'p1=hello&p2=nice',    //p1은 hello로 p2는 nice로 값을 넘긴다 (부분을 조회하고 싶을때)
+				dataType: 'json',
+				success: function (resolve) {
+					showList(resolve);
+				},
+				error: function (reject) {
+					window.alert(reject.statusText);
+					console.error(`에러코드:${reject.status}, 에러메세지:${reject.statusText}`);
+				}
+			})
+			// 한건 입력 작업 ajax
+			$('#frm').on('submit', function (e) {
+				e.preventDefault(); // 서블릿 페이지로 안넘어가게 막겠다
+				$.ajax({
+					url: $('#frm').attr('action'), // 이런건 보통 파라미터 하나만 주면 읽어온다는 뜻
+					// key와 value 여러개 넘길 때   //key=val&key2=val2&..  post에 전송되는 데이터양식대로 데이터 정의 
+					data: 'm_id=' + $('#m_id').val() +
+						'&m_name=' + $('#m_name').val() +
+						'&m_age=' + $('#m_age').val(),
+					dataType: 'json', // 받아올 데이터타입
+					type: 'post',
+					success: createRow(),
+					error: function (err) {
+						console.error(err);
+					}
+				});
+			})
+		});
+
+		function showList(resolve) {
+			console.log(resolve);
+			let $table = $('<table id="tbl"/>').attr('border', '1');
+
+			// 헤더 생성
+
+			var $Id = 'Id';
+			var $name = 'Name';
+			var $age = 'Age';
+
+
+			for (var i = 0; i < resolve.length; i++) {
+			var $tr = $('<tr />');
+			    var $th = $('<th />').append($Id);
+				$tr.append($th);
+				var $th = $('<th />').append($name);
+				$tr.append($th);
+				var $th = $('<th />').append($age);
+				$tr.append($th);
+			
+
+			var $th = $('<th />').append('Func');
+			$tr.append($th);
+			$table.append($tr);
+		}
+
+			// 내용 생성
+			for (var i = 0; i < resolve.length; i++) {
+
+				let $tr = $('<tr />');
+				for (field in resolve[i]) {
+					var $td = $('<td />').append(resolve[i][field]);
+
+					$tr.append($td);
+				}
+				var $btn = $('<button />').append('삭제');
+				$btn.click(deleteRow);
+				var $td = $('<td />').append($btn);
+				$tr.append($td);
+				$table.append($tr);
+			}
+			// let $table = $('<table id="tbl" />').attr("border", "1");
+
+			// let trTag = $('<tr />');
+			// let $th = $('<th />');
+			// let $td = $('<td />');
+
+			// let mapData = $(resolve).map(function (i, o) {
+			// 	trTag.append(
+			// 		$td.html(o.id),
+			// 		$td.html(o.name),
+			// 		$td.html(o.age)
+			// 	);
+			// 	return trTag.get();
+			// });
+			// console.log(mapData);
+			// $('#tbl').append(mapData);
+			// $('#show').append($table);
+			$('#show').append($table);
+		}
+
+		function createRow() { //신규 입력된 데이터를 화면에 추가로 보여주기.
+			var $tr = $('<tr />');
+			var $td_id = $('<td />').append($('#m_id').val());
+			var $td_name = $('<td />').append($('#m_name').val());
+			var $td_age = $('<td />').append($('#m_age').val());
+			var $td = $('<td />');
+			var $btn = $('<button />').append('삭제');
+			$btn.click(deleteRow);
+
+
+			$td.append($btn);
+			$tr.append($td_id, $td_name, $td_age, $td);
+			$('#tbl').append($tr);
+		}
+
+		function deleteRow() {
+			console.log(this);  //this -> button
+			let id = $(this).parent().parent().children().eq(0).html();
+			let delTr = $(this).parent().parent();
+			//db에서 삭제
+			$.ajax({   	 		//서블릿 호출
+				url: '../MemberDelServlet',
+				data: 'mid='+ id,    //넘겨주는 데이터
+				success: function(){
+					console.log("삭제후 처리..");
+					//화면 삭제	
+					delTr.remove();
+				},
+				error: function(err) {
+					console.log(err);
+					
+				}
+			});
+			
+			
+
+		}
+	</script>
+
+</head>
+
+<body>
+
+	<!-- form 태그 안에 input태그들을 넣고 사용자가 해당 값들을 입력하여 submit 하면 여결된 서블릿에 해당 값들이 getParameter값으로 입력되어 데이터베이스에 업데이트 가능 -->
+	<!-- //action 에 서블릿 페이지 이름을 적고, method에는 get/post 입력 -->
+
+
+	<!-- /jquery/html -->
+
+	<form id="frm" action='memberServlet.do' method='post'>
+		ID: <input type="number" name="m_id" id="m_id" value="1" /><br>
+		이름: <input type="text" name="m_name" id="m_name" value="hong" /><br>
+		나이: <input type="number" name="m_age" id="m_age" value="20" /><br>
+		<input type="submit" value="저장">
+	</form>
+<br>
+	<div id="show"></div>
+
+	<!--  get:  http://localhost/memberCreate.do?m_id=1&m_name=hong&m_age=20
+    post: http://localhost/webProj/memberCreate.do
+   
+   get방식은 주로 조회하는 기능을 많이 쓰고 post방식은 주소에 입력값이 보이지 않기 때문에 form양식값 전달받을시 사용한다 -->
+
+</body>
+
+</html>

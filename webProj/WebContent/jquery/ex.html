@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ex.html</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
 </head>
 
 <body>
@@ -13,10 +14,11 @@
     <select name="plus" size="10">
         <option>plus1</option>
         <option>plus2</option>
-        <option>plus3</option>
+        <option selected>plus3</option>
         <option>plus4</option>
         <option>plus5</option>
     </select>
+
     <button id="plus">+</button>
     <button id="minus">-</button>
     <select name="minus" size='10'>
@@ -28,65 +30,18 @@
 
     </select>
 
-    <script>
-
-
-
-
-        $('span').click(function () {
-            $('li').each(function () {
-                //클릭할때마다 클래스 속성 true false 변경 / toggleClass('ex') 를 쓰면 ex 클래스를 껐다켰다 해줌
-                $(this).toggleClass('ex');
-            });
-        })
-    </script>
 
     <script>
-        $('p').append(
-            $('input').map(function () {
-                return $(this).val();
-            }).get().join(',')); //get : input 요소 각각을 가지고 와서 join: 배열 각 요소들을 자바 스크립트 문자열 타입으로 바꿈
-    </script>
-
-    <script>
-
-var select = click
-
-        btn.click((evnt) => {
-            console.log($(this), evnt);
-            //$(this) => function: event 대상, arrow fnc: object  
-            evnt.currentTarget.parentNode.parentNode.remove();
+        
+        $('#plus').click(function () {
+            console.log($('select[name="plus"]').val());
+            
+            $('select[name="plus"]:selected').remove();
+            
+            $('select[name="minus"]').append($('select[name="plus"]:selected'));
         });
-
-        function rowSelect() {
-    $(this).parentNode.parentNode.remove();
-    }
-    
-        function rowRemove() {
-    $(this).parentNode.parentNode.remove();
-    }
-
     </script>
 
-
-    plus.mouseover(mouseOverFnc);
-    trTag.mouseout(mouseOutFnc);
-
-    let btn = $('<button />').html('Del');
-    btn.click((evnt) => {
-    console.log($(this),evnt);
-    //$(this) => function: event 대상, arrow fnc: object
-    evnt.currentTarget.parentNode.parentNode.remove();
-    });
-
-
-    function mouseOverFnc() { //$this : 현재 실행되고 있는 이벤트 요소
-    $(this).css('background-color','yellow');
-    }
-
-    function mouseOutFnc() {
-    $(this).css('background-color','');
-    }
 
 </body>
 
