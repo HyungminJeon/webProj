@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css" />
+    <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+    <script>
+        var dataSet = []; // 배열 선언
+        
+        $.ajax({
+        	url: '../emplDemoServlet2',
+        	dataType: 'json', // 서버에서 반환되는 데이터 형식 json
+			// type의 기본값이 'get'. 생략되어 있음
+        	success: function(data){
+        		console.log(data); // 받아온 결과값 data
+				for(let row of data){ // 받아온 data의 요소(row)마다
+					dataSet.push(row); // 배열 선언한 dataSet에 받아온 행들을 push
+				}
+				// 아래의 dataTable 호출 부분이 꼭 ajax 안에 있어야 함.
+				// ajax는 비동기이므로 $(function())에 넣으면 ajax 비동기실행 > 데이터가 없는 채로 $(function(){}) 실행되서 조짐
+				$('#example').DataTable( {
+					data: dataSet,
+	        		columns: [
+						{ title: "사번" },
+						{ title: "이름" },
+						{ title: "이메일" },
+						{ title: "연락처" },
+						{ title: "입사일" },
+						{ title: "연봉" }
+	        		]
+	    		});
+        	}
+        });
+        
+		$(document).ready(function() {
+			
+	   	});
+    </script>
+</head>
+<body>
+    <table id="example" class="display" width="100%"></table>
+</body>
+</html>
