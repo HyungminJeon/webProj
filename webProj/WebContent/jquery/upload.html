@@ -39,7 +39,6 @@
                 }
             });
 
-
             //파일을 선택하면 이미지 나타나도록..
             $('#filename').change(function () {
                 for (let file of this.files) { // .files를 사용하면 선택한 파일을 목록을 볼 수 있다.
@@ -74,6 +73,34 @@
 
                 });
             })
+            
+            
+            //수정버튼 클릭이벤트.
+            $('#modifybtn').click(function(e) {
+                e.preventDefault();
+                let frm = document.getElementById('frm');  //자바스크립트형식으로 key값 가져옴
+            	let data = new FormData(frm);
+
+                $.ajax({
+                    contentType: false,
+                    processData: false,
+                    url: '../fileModifyServlet',
+                    data: data,
+                    dataType: 'json',
+                    type: 'post',
+                    success: function(result) {  
+						if(result.retCode == 'Success') {
+							window.alert('정상수정됨.');
+						} else {
+							window.alert("수정예외발생.");
+						}
+                    },
+                    error: function(err) {
+                        console.log(err);
+                    }
+                });
+            });
+            
             
             // 링크 클릭햇을 때 CallBack
             function linkClickCallBack (e) {
@@ -308,7 +335,9 @@
                 <td><input type="file" name="filename" id="filename"></td>
             </tr>
             <tr>
-                <td colspan="3"><input type="submit"> <input type="reset"></td>
+                <td colspan="3"><input type="submit" value= "Submit"> <input type="reset" value= "Reset">
+                <button id = "modifybtn">수정</button>
+                </td>
             </tr>
         </table>
 
